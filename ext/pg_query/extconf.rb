@@ -1,24 +1,24 @@
 # rubocop:disable Style/GlobalVars
 
 require 'mkmf'
-#require 'open-uri'
+require 'open-uri'
 
 workdir = Dir.pwd
-libdir = File.join(workdir, 'libpg_query')
+tarname = 'libpg_query-master'
+libdir  = File.join(workdir, tarname)
 
 # Download & compile PostgreSQL if we don't have it yet
 #
 # Note: We intentionally use a patched version that fixes bugs in outfuncs.c
 unless Dir.exist?(libdir)
-  #unless File.exist?("#{workdir}/postgres.tar.gz")
-  #  File.open("#{workdir}/postgres.tar.gz", 'wb') do |target_file|
-  #    open('https://codeload.github.com/pganalyze/postgres/tar.gz/pg_query', 'rb') do |read_file|
-  #      target_file.write(read_file.read)
-  #    end
-  #  end
-  #end
-  #system("tar -xf #{workdir}/postgres.tar.gz") || fail('ERROR')
-  system("cp -a /Users/lfittl/Code/libpg_query #{libdir}") || fail('ERROR')
+  unless File.exist?("#{workdir}/#{tarname}.tar.gz")
+    File.open("#{workdir}/#{tarname}.tar.gz", 'wb') do |target_file|
+      open('https://codeload.github.com/lfittl/libpg_query/tar.gz/master', 'rb') do |read_file|
+        target_file.write(read_file.read)
+      end
+    end
+  end
+  system("tar -xf #{workdir}/#{tarname}.tar.gz") || fail('ERROR')
   system("cd #{libdir}; make")
 end
 
